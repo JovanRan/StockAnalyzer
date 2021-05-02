@@ -1,66 +1,68 @@
 package stockanalyzer.ui;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import stockanalyzer.ctrl.Controller;
+import yahooApi.YahooFinanceException;
 
-public class UserInterface 
+public class UserInterface
 {
 
 	private Controller ctrl = new Controller();
 
 	public void getDataFromCtrl1(){
-		ctrl.process("ABC");
+		try {
+			ctrl.process("BMW.DE");
+		} catch (YahooFinanceException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void getDataFromCtrl2(){
+		try {
+			ctrl.process("VWAGY");
+		} catch (YahooFinanceException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void getDataFromCtrl3(){
-
-	}
-	public void getDataFromCtrl4(){
-
-	}
-	
-	public void getDataForCustomInput() {
-		
+	public void getDataFromCtrl3() {
+		try {
+			ctrl.process("GM");
+		} catch (YahooFinanceException e) {
+			e.printStackTrace();
+		}
 	}
 
-
-	public void start() {
-		Menu<Runnable> menu = new Menu<>("User Interfacx");
+	public void start() throws YahooFinanceException {
+		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitel("Wählen Sie aus:");
-		menu.insert("a", "Choice 1", this::getDataFromCtrl1);
-		menu.insert("b", "Choice 2", this::getDataFromCtrl2);
-		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
-		menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
-		menu.insert("z", "Choice User Imput:",this::getDataFromCtrl4);
+		menu.insert("a", "Bayerische Motoren Werke Aktiengesellschaft", this::getDataFromCtrl1);
+		menu.insert("b", "Volkswagen AG", this::getDataFromCtrl2);
+		menu.insert("c", "General Motors Company.", this::getDataFromCtrl3);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {
-			 choice.run();
+			choice.run();
 		}
-		ctrl.closeConnection();
 		System.out.println("Program finished");
 	}
 
-
-	protected String readLine() 
+	protected String readLine()
 	{
 		String value = "\0";
 		BufferedReader inReader = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			value = inReader.readLine();
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return value.trim();
 	}
 
-	protected Double readDouble(int lowerlimit, int upperlimit) 
+	protected Double readDouble(int lowerlimit, int upperlimit)
 	{
 		Double number = null;
 		while(number == null) {
