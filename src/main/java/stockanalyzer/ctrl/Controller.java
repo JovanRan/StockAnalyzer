@@ -1,12 +1,16 @@
 package stockanalyzer.ctrl;
 
+import stockanalyzer.downloader.Downloader;
+import stockanalyzer.downloader.SequentialDownloader;
 import yahooApi.YahooFinanceException;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.Interval;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Controller {
 
@@ -45,6 +49,10 @@ public class Controller {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void downloadTickers(List<String> list, Downloader downloader) throws YahooFinanceException{
+		downloader.process(list);
 	}
 
 	public Object getData(String searchString) {return null;}
